@@ -45,3 +45,8 @@ patch(X2Many2DMatrixRenderer.prototype, {
         return {o_matrix_today: column.isToday};
     },
 });
+console.log(
+    "PATCH RESULT",
+    typeof X2Many2DMatrixRenderer.prototype._getCellClass,
+    X2Many2DMatrixRenderer.prototype
+);
