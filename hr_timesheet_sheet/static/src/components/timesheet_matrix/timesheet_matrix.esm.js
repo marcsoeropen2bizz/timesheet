@@ -1,19 +1,13 @@
-import {DateTime} from "luxon";
-
 import {registry} from "@web/core/registry";
-import {
-    X2Many2DMatrixField,
-    x2Many2DMatrixField,
-} from "@web_widget_x2many_2d_matrix/components/x2many_2d_matrix_field/x2many_2d_matrix_field.esm";
+import {X2Many2DMatrixField, x2Many2DMatrixField} from "@web_widget_x2many_2d_matrix/components/x2many_2d_matrix_field/x2many_2d_matrix_field.esm";
 import {X2Many2DMatrixRenderer} from "@web_widget_x2many_2d_matrix/components/x2many_2d_matrix_renderer/x2many_2d_matrix_renderer.esm";
-
 
 export class TimesheetMatrixRenderer extends X2Many2DMatrixRenderer {
     static template = "hr_timesheet_sheet.TimesheetMatrixRenderer";
 
     _getColumns(records) {
         const columns = super._getColumns(...arguments);
-        const today = DateTime.now().toISODate();
+        const today = luxon.DateTime.now().toISODate();
         const allRecords = records || this.list.records;
 
         for (const col of columns) {
@@ -59,7 +53,6 @@ export class TimesheetMatrixRenderer extends X2Many2DMatrixRenderer {
     }
 }
 
-
 export class TimesheetMatrixField extends X2Many2DMatrixField {
     static components = {
         ...X2Many2DMatrixField.components,
@@ -67,12 +60,10 @@ export class TimesheetMatrixField extends X2Many2DMatrixField {
     };
 }
 
-
 export const timesheetX2Many2DMatrixField = {
     ...x2Many2DMatrixField,
     component: TimesheetMatrixField,
 };
-
 
 registry
     .category("fields")
