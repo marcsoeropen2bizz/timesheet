@@ -1,6 +1,8 @@
 import {X2Many2DMatrixRenderer} from "@web_widget_x2many_2d_matrix/components/x2many_2d_matrix_renderer/x2many_2d_matrix_renderer.esm";
 import {patch} from "@web/core/utils/patch";
 
+console.log("HR TIMESHEET MATRIX PATCH LOADED");
+
 patch(X2Many2DMatrixRenderer.prototype, {
     _getColumns(records) {
         const columns = super._getColumns(...arguments);
@@ -10,12 +12,18 @@ patch(X2Many2DMatrixRenderer.prototype, {
         for (const col of columns) {
             const record = allRecords.find((r) => {
                 const val = r.data[this.matrixFields.x];
-                return (Array.isArray(val) ? val[0] : val) === col.value;
+
+                if (r.fields[this.matrixFields.x].type === "many2one") {
+                    return val?.id === col.value;
+                }
+
+                return val === col.value;
             });
 
             if (record?.data?.date) {
                 const dateStr =
-                    record.data.date.toISODate?.() || record.data.date.split(" ")[0];
+                    record.data.date.toISODate?.() ||
+                    record.data.date.split(" ")[0];
                 col.isToday = dateStr === today;
             }
         }
