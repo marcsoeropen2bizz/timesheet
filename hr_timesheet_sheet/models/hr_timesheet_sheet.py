@@ -698,12 +698,7 @@ class Sheet(models.Model):
                 aal.write({"sheet_id": self.id})
 
     def clean_timesheets(self, timesheets):
-        repeated = timesheets.filtered(
-            lambda t: t.name == empty_name and not t.timesheet_invoice_id
-        )
-        if len(repeated) > 1 and self.id:
-            return repeated.merge_timesheets()
-        return timesheets
+        repeated = timesheets.filtered(lambda t: t.name == empty_name and not t.readonly_timesheet)
 
     def _is_add_line(self, row):
         """Hook for extensions"""
@@ -739,7 +734,7 @@ class Sheet(models.Model):
             row_lines.filtered(
                 lambda t: t.name == empty_name
                 and not t.unit_amount
-                and not t.timesheet_invoice_id
+                and not t.readonly_timesheet
             ).unlink()
             if self.timesheet_ids != self.timesheet_ids.exists():
                 self._sheet_write("timesheet_ids", self.timesheet_ids.exists())
