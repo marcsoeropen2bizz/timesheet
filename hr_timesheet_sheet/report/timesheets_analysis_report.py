@@ -14,9 +14,10 @@ class TimesheetsAnalysisReport(models.Model):
 
     @api.model
     def _select(self):
-        return (
-            super()._select()
-            + """,
+        return SQL(
+            """
+            %s,
             A.sheet_id AS sheet_id
-        """
+            """,
+            super()._select(),
         )
